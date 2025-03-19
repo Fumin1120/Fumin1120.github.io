@@ -34,27 +34,46 @@ navLinks.forEach(link => {
 // 導覽列滑鼠懸停互動效果
 navLinks.forEach(link => {
     link.addEventListener('mouseenter', (e) => {
+        // 先移除任何現有的漣漪效果，確保不會堆疊
+        const existingRipples = link.querySelectorAll('.nav-ripple');
+        existingRipples.forEach(oldRipple => oldRipple.remove());
+        
         // 創建漣漪效果
         const ripple = document.createElement('span');
+        ripple.className = 'nav-ripple'; // 添加類名以便識別
+        
+        // 設置位置，確保漣漪從鼠標位置開始
+        const rect = link.getBoundingClientRect();
+        const relX = e.clientX - rect.left;
+        const relY = e.clientY - rect.top;
+        
         ripple.style.position = 'absolute';
+        ripple.style.left = relX + 'px';
+        ripple.style.top = relY + 'px';
         ripple.style.width = '5px';
         ripple.style.height = '5px';
         ripple.style.background = 'rgba(94, 96, 206, 0.3)';
         ripple.style.borderRadius = '50%';
-        ripple.style.transform = 'scale(1)';
+        ripple.style.transform = 'translate(-50%, -50%) scale(1)';
         ripple.style.opacity = '1';
-        ripple.style.transition = 'all 0.6s ease';
+        ripple.style.transition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        ripple.style.pointerEvents = 'none'; // 確保不會干擾鼠標事件
         
+        // 先添加到鏈接中
+        link.style.position = 'relative'; // 確保定位正確
+        link.style.overflow = 'hidden'; // 可選，限制漣漪在鏈接內
         link.appendChild(ripple);
         
-        setTimeout(() => {
-            ripple.style.transform = 'scale(20)';
+        // 延遲擴大漣漪，確保過渡效果正常工作
+        requestAnimationFrame(() => {
+            ripple.style.transform = 'translate(-50%, -50%) scale(30)';
             ripple.style.opacity = '0';
-        }, 10);
+        });
         
+        // 完成後移除元素，避免累積不必要的DOM元素
         setTimeout(() => {
             ripple.remove();
-        }, 600);
+        }, 500);
     });
 });
 
