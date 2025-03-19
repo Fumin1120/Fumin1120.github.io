@@ -1,10 +1,423 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>hellow</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人作品集</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<p>hellow</p>
+    <!-- 導覽列 -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#home" class="logo">Fumin</a>
+                <ul class="nav-list">
+                    <li><a href="#home" class="active">首頁</a></li>
+                    <li><a href="#about">關於我</a></li>
+                    <li><a href="#skills">技能</a></li>
+                    <li><a href="#portfolio">作品集</a></li>
+                    <li><a href="#Certification">證照</a></li>
+                    <li><a href="#contact">聯絡</a></li>
+                </ul>
+                <div class="menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 首頁區域 -->
+    <section id="home">
+        <div class="container">
+            <div class="home-content">
+                <div class="home-text">
+                    <h1>嗨，我是 <span>許家豐(FUMIN)</span></h1>
+                    <p>一個社會新鮮人,走在程式的道路上,永無止境。</p>
+                    <a href="#portfolio" class="btn">查看作品</a>
+                </div>
+                <div class="home-img">
+                    <img src="image/_DSC8176.JPG" alt="個人照片" class="profile-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 關於我區域 -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">關於我</h2>
+            <div class="about-content">
+                <div class="about-img">
+                    <img src="image/_DSC8260.JPG" alt="關於我照片">
+                </div>
+                <div class="about-text">
+                    <h3>我的故事</h3>
+                    <p>我是個開朗的開心果,熱衷於學習,遇到瓶頸試著突破!</p>
+                    <p>喜愛聊天,喜歡運動,喜歡待在電腦前面寫著程式,喜愛聽歌!</p>
+                    <!-- <div class="personal-info">
+                        <div class="info-item">
+                            <strong>姓名:</strong> 您的名字
+                        </div>
+                        <div class="info-item">
+                            <strong>電子郵件:</strong> your.email@example.com
+                        </div>
+                        <div class="info-item">
+                            <strong>年齡:</strong> 您的年齡
+                        </div>
+                        <div class="info-item">
+                            <strong>所在地:</strong> 您的所在城市
+                        </div>
+                        <div class="info-item">
+                            <strong>學歷:</strong> 您的最高學歷
+                        </div>
+                        <div class="info-item">
+                            <strong>職業:</strong> 您的職業
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技能區域 -->
+    <section id="skills">
+        <div class="container">
+            <h2 class="section-title">我的技能熟練度</h2>
+            <div class="skills-content">
+                <div class="skill-category">
+                    <h3>設計技能</h3>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <h4>UI/UX 設計</h4>
+                            <span>60%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="60%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <h4>平面設計</h4>
+                            <span>60%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="60%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <h4>動態設計</h4>
+                            <span>60%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="60%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <h4>MAYA建模設計</h4>
+                            <span>50%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="50%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>開發技能</h3>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <h4>HTML/CSS</h4>
+                            <span>82%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="82%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <h4>JavaScript</h4>
+                            <span>80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="80%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <h4>Vue框架</h4>
+                            <span>70%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="70%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <h4>python</h4>
+                            <span>80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="80%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <h4>C#</h4>
+                            <span>65%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="65%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <h4>Java</h4>
+                            <span>50%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="50%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>其他技能</h3>
+                    <div class="skill-item">
+                         <div class="skill-info">
+                            <h4>ChatGPT</h4>
+                            <span>85%</span>
+                        </div>
+                         <div class="skill-bar">
+                            <div class="skill-progress" data-width="85%"></div>
+                        </div> 
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                           <h4>Claude</h4>
+                           <span>83%</span>
+                       </div>
+                        <div class="skill-bar">
+                           <div class="skill-progress" data-width="83%"></div>
+                       </div> 
+                   </div>
+                   <div class="skill-item">
+                    <div class="skill-info">
+                       <h4>Canva</h4>
+                       <span>78%</span>
+                   </div>
+                    <div class="skill-bar">
+                       <div class="skill-progress" data-width="78%"></div>
+                   </div> 
+               </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <h4>溝通能力</h4>
+                            <span>75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="75%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <h4>團隊合作</h4>
+                            <span>80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="80%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <h4>GitHub版本控制</h4>
+                            <span>80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="80%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <h4>Google ads</h4>
+                            <span>60%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="60%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 作品集區域 -->
+    <section id="portfolio">
+        <div class="container">
+            <h2 class="section-title">我的作品集</h2>
+            <div class="portfolio-filter">
+                <button class="filter-btn active" data-filter="all">所有作品</button>
+                <button class="filter-btn" data-filter="web">網頁設計</button>
+                <button class="filter-btn" data-filter="script">程式設計</button>
+                <button class="filter-btn" data-filter="design">平面設計</button>
+                <button class="filter-btn" data-filter="app">3D</button>
+            </div>
+            <div class="portfolio-grid">
+                <div class="portfolio-item" data-category="web">
+                    <img src="/image/web1.png" alt="作品1" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3>Wordpress網站設計</h3>
+                        <p>沐光英短貓設網站</p>
+                        <div class="portfolio-btns">
+                            <a href="#" class="portfolio-btn">🔍</a>
+                            <a href="#" class="portfolio-btn">🔗</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="script">
+                    <img src="/image/python.png" alt="作品2" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3>python程式應用</h3>
+                        <p>這是個利用API爬蟲及預測的小專題</p>
+                        <div class="portfolio-btns">
+                            <a href="#" class="portfolio-btn">🔍</a>
+                            <a href="#" class="portfolio-btn">🔗</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="3D">
+                    <img src="/image/maya-1.png" alt="作品3" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3>maya人物建模</h3>
+                        <p>簡易的人物建模。</p>
+                        <div class="portfolio-btns">
+                            <a href="#" class="portfolio-btn">🔍</a>
+                            <a href="#" class="portfolio-btn">🔗</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="web">
+                    <img src="image/animation.png" alt="作品4" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3>可愛的人物設計</h3>
+                        <p>為一個小小的動畫設計的人物</p>
+                        <div class="portfolio-btns">
+                            <a href="#" class="portfolio-btn">🔍</a>
+                            <a href="#" class="portfolio-btn">🔗</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="script">
+                    <img src="/image/Unity phone game.png" alt="作品5" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3>手機程式小遊戲</h3>
+                        <p>簡易的程式設計小遊戲</p>
+                        <div class="portfolio-btns">
+                            <a href="#" class="portfolio-btn">🔍</a>
+                            <a href="#" class="portfolio-btn">🔗</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="3D">
+                    <img src="/image/maya-2.png" alt="作品6" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3>maya3D場景建模</h3>
+                        <p>簡易的廠景建模</p>
+                        <div class="portfolio-btns">
+                            <a href="#" class="portfolio-btn">🔍</a>
+                            <a href="#" class="portfolio-btn">🔗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section id="Certification">
+            <div class="container">
+                <h2 class="section-title">我的證照</h2>
+                <div class="portfolio-filter">
+                    <button class="filter-btn active" data-filter="all">所有證照</button>
+                    <button class="filter-btn" data-filter="script">程式設計</button>
+                    <button class="filter-btn" data-filter="google">google ads</button>
+                    <button class="filter-btn" data-filter="3D">3D</button>
+                </div>
+                <div class="portfolio-item" data-category="script">
+                    <img src="/image/python  ITS.png" alt="證照1" class="portfolio-img"personal-info>
+                    <div class="portfolio-overlay">
+                        <h3>ITS Python 國際認證</h3>
+                        <p></p>
+                        <div class="portfolio-btns">
+                            <a href="#" class="portfolio-btn">🔍</a>
+                            <a href="#" class="portfolio-btn">🔗</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="google">
+                    <img src="/image/google-1.png" alt="證照2" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3>google ads 搜尋廣告認證</h3>
+                        <p></p>
+                        <div class="portfolio-btns">
+                            <a href="#" class="portfolio-btn">🔍</a>
+                            <a href="#" class="portfolio-btn">🔗</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="google">
+                    <img src="/image/google-2.png" alt="證照3" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3>google ads 多媒體廣告認證</h3>
+                        <p></p>
+                        <div class="portfolio-btns">
+                            <a href="#" class="portfolio-btn">🔍</a>
+                            <a href="#" class="portfolio-btn">🔗</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="3D">
+                    <img src="/image/MAYAM.png" alt="作品6" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3>MAYA國際認證</h3>
+                        <p></p>
+                        <div class="portfolio-btns">
+                            <a href="#" class="portfolio-btn">🔍</a>
+                            <a href="#" class="portfolio-btn">🔗</a>
+                        </div>
+                    </div>
+                </div>
+    </section>
+
+    <!-- 頁尾區域 -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>關於我</h3>
+                    <p>感謝您訪問我的個人作品集網站。如果您對我的作品感興趣，或者有任何合作機會，請隨時與我聯繫。</p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/fumin1121_/"><img src="/image/ig.png"></image></a>
+                        <a href="https://github.com/Fumin1120"><img src="/image/github-sign.png"></image></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>聯絡資訊</h3>
+                    <ul class="footer-contact">
+                        <li><i>📍</i> 您的地址</li>
+                        <li><i>📧</i> ddd11514@gmail.com</li>
+                        <li><i>📱</i> 0908 587 827</li>
+                        <li><i>🌐</i> </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 HSU CHIA FENG | 版權所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>
