@@ -1,6 +1,4 @@
-// 修復導覽列平滑滾動功能
-
-// 獲取所有元素
+// 導覽列互動效果
 const header = document.querySelector('header');
 const menuToggle = document.querySelector('.menu-toggle');
 const navList = document.querySelector('.nav-list');
@@ -58,33 +56,126 @@ navLinks.forEach(link => {
     });
 });
 
-// 改良的平滑滾動功能
+// 優化的平滑滾動功能
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();
         
         const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
         const targetElement = document.querySelector(targetId);
+        if (!targetElement) return;
         
-        if (!targetElement) return; // 如果找不到目標元素則不執行
-        
-        // 獲取導覽列的高度
+        // 獲取導覽列高度
         const navHeight = document.querySelector('header').offsetHeight;
         
-        // 計算正確的滾動位置
-        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
+        // 精確計算目標位置
+        const elementTop = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementTop + window.pageYOffset;
         
-        // 使用原生的平滑滾動 API，更快速且更穩定
-        window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-        });
+        // 增加足夠的偏移量，確保節點不會被導覽列遮擋
+        const finalPosition = offsetPosition - navHeight - 20;
         
-        // 更新活動導覽項目
-        navLinks.forEach(navLink => navLink.classList.remove('active'));
+        // 設置目標導覽項為活動狀態
+        navLinks.forEach(link => link.classList.remove('active'));
         this.classList.add('active');
+        
+        // 定義滾動參數
+        const duration = 600;  // 適中的持續時間
+        const startTime = performance.now();
+        const startPosition = window.pageYOffset;
+        const distance = finalPosition - startPosition;
+        
+        // 使用平滑的滾動動畫函數
+        function easeInOutCubic(t) {
+            return t < 0.5 
+                ? 4 * t * t * t 
+                : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+        }
+        
+        // 執行滾動動畫
+        function scroll(timestamp) {
+            const elapsed = timestamp - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeProgress = easeInOutCubic(progress);
+            
+            window.scrollTo(0, startPosition + distance * easeProgress);
+            
+            if (progress < 1) {
+                requestAnimationFrame(scroll);
+            } else {
+                // 確保最終位置精確
+                window.scrollTo(0, finalPosition);
+                
+                // 滾動完成後更新導覽項目
+                setTimeout(updateActiveNavLink, 100);
+            }
+        }
+        
+        requestAnimationFrame(scroll);
     });
 });
+
+// 準確的活動導覽項目更新函數
+function updateActiveNavLink() {
+    // 找出所有有ID的區段
+    const sections = Array.from(document.querySelectorAll('section[id]'));
+    
+    // 如果沒有區段，則不執行
+    if (sections.length === 0) return;
+    
+    // 獲取導覽列高度
+    const navHeight = document.querySelector('header').offsetHeight;
+    
+    // 當前滾動位置加上偏移量
+    const scrollPosition = window.pageYOffset + navHeight +100 ;
+    
+    // 尋找最接近的區段
+    let activeSection = null;
+    let minDistance = Infinity;
+    
+    // 優先考慮已經滾動過的區段
+    for (const section of sections) {
+        const sectionTop = section.offsetTop;
+        
+        if (scrollPosition >= sectionTop) {
+            const distance = scrollPosition - sectionTop;
+            if (distance < minDistance) {
+                minDistance = distance;
+                activeSection = section;
+            }
+        }
+    }
+    
+    // 如果沒有找到已滾動過的區段，則考慮即將到達的區段
+    if (!activeSection && sections.length > 0) {
+        for (const section of sections) {
+            const distance = Math.abs(scrollPosition - section.offsetTop);
+            if (distance < minDistance) {
+                minDistance = distance;
+                activeSection = section;
+            }
+        }
+    }
+    
+    // 更新導覽列項目
+    if (activeSection) {
+        const activeSectionId = activeSection.id;
+        navLinks.forEach(link => {
+            const linkHref = link.getAttribute('href');
+            if (linkHref === `#${activeSectionId}`) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+}
+
+// 初始化和滾動時更新導覽項目
+window.addEventListener('scroll', updateActiveNavLink);
+window.addEventListener('load', updateActiveNavLink);
 
 // 技能進度條和數字動畫
 const skillSections = document.querySelectorAll('.skill-category');
@@ -203,24 +294,4 @@ window.addEventListener('load', () => {
             fadeInSkills();
         }
     }
-});
-
-// 簡化版的滾動監聽，更新當前活動的導覽列選項
-window.addEventListener('scroll', () => {
-    const scrollPosition = window.scrollY + header.offsetHeight + 20; // 額外偏移量確保更好的觸發點
-    
-    document.querySelectorAll('section').forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionBottom = sectionTop + section.offsetHeight;
-        const sectionId = section.getAttribute('id');
-        
-        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${sectionId}`) {
-                    link.classList.add('active');
-                }
-            });
-        }
-    });
 });
