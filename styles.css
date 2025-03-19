@@ -51,7 +51,8 @@ section {
 }
 
 .logo img{
-height: 100px;
+height:auto;
+width: 5rem;
 }
 
 /* 載入畫面主容器樣式 */
