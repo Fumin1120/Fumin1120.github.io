@@ -1,4 +1,6 @@
-// 導覽列互動效果
+// 修復導覽列平滑滾動功能
+
+// 獲取所有元素
 const header = document.querySelector('header');
 const menuToggle = document.querySelector('.menu-toggle');
 const navList = document.querySelector('.nav-list');
@@ -53,6 +55,34 @@ navLinks.forEach(link => {
         setTimeout(() => {
             ripple.remove();
         }, 600);
+    });
+});
+
+// 改良的平滑滾動功能
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (!targetElement) return; // 如果找不到目標元素則不執行
+        
+        // 獲取導覽列的高度
+        const navHeight = document.querySelector('header').offsetHeight;
+        
+        // 計算正確的滾動位置
+        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
+        
+        // 使用原生的平滑滾動 API，更快速且更穩定
+        window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+        });
+        
+        // 更新活動導覽項目
+        navLinks.forEach(navLink => navLink.classList.remove('active'));
+        this.classList.add('active');
     });
 });
 
@@ -125,6 +155,7 @@ function animateValue(element, start, end, duration) {
     };
     window.requestAnimationFrame(step);
 }
+
 // 作品集篩選功能
 const filterBtns = document.querySelectorAll('.filter-btn');
 const portfolioItems = document.querySelectorAll('.portfolio-item');
@@ -166,70 +197,25 @@ skillSections.forEach(section => {
 window.addEventListener('load', () => {
     // 如果技能區域已經在視口中，則啟動動畫
     const skillsSection = document.getElementById('skills');
-    const rect = skillsSection.getBoundingClientRect();
-    if (rect.top < window.innerHeight && rect.bottom >= 0) {
-        fadeInSkills();
-    }
-});
-
-// 監聽導覽列選項點擊，並平滑滾動到對應區域
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
-        
-        // 獲取導覽列的高度，作為滾動的偏移量
-        const navHeight = document.querySelector('header').offsetHeight;
-        
-        // 使用更平滑的滾動效果
-        smoothScroll(targetElement, navHeight);
-    });
-});
-
-// 平滑滾動函數，更好的跨瀏覽器兼容性
-function smoothScroll(targetElement, offset = 0) {
-    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - offset;
-    const startPosition = window.pageYOffset;
-    const distance = targetPosition - startPosition;
-    const duration = 1000; // 滾動持續時間，毫秒
-    let startTime = null;
-    
-    function animation(currentTime) {
-        if (startTime === null) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const scrollY = ease(timeElapsed, startPosition, distance, duration);
-        window.scrollTo(0, scrollY);
-        
-        if (timeElapsed < duration) {
-            requestAnimationFrame(animation);
+    if (skillsSection) {
+        const rect = skillsSection.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom >= 0) {
+            fadeInSkills();
         }
     }
-    
-    // 緩動函數，使滾動更加平滑
-    function ease(t, b, c, d) {
-        t /= d / 2;
-        if (t < 1) return c / 2 * t * t + b;
-        t--;
-        return -c / 2 * (t * (t - 2) - 1) + b;
-    }
-    
-    requestAnimationFrame(animation);
-}
+});
 
-// 更新當前活動的導覽列選項
-const updateActiveNavLink = () => {
-    const sections = document.querySelectorAll('section');
-    const scrollPosition = window.scrollY + 100;
+// 簡化版的滾動監聽，更新當前活動的導覽列選項
+window.addEventListener('scroll', () => {
+    const scrollPosition = window.scrollY + header.offsetHeight + 20; // 額外偏移量確保更好的觸發點
     
-    sections.forEach(section => {
+    document.querySelectorAll('section').forEach(section => {
         const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
+        const sectionBottom = sectionTop + section.offsetHeight;
         const sectionId = section.getAttribute('id');
         
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            document.querySelectorAll('.nav-list a').forEach(link => {
+        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            navLinks.forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('href') === `#${sectionId}`) {
                     link.classList.add('active');
@@ -237,7 +223,4 @@ const updateActiveNavLink = () => {
             });
         }
     });
-};
-
-// 監聽滾動事件，更新活動的導覽列選項
-window.addEventListener('scroll', updateActiveNavLink);
+});
