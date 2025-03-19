@@ -358,4 +358,30 @@ window.addEventListener('load', () => {
             fadeInSkills();
         }
     }
+
+// 添加 loading 類到 body，防止頁面在載入期間可捲動
+document.body.classList.add('loading');
+
+// 頁面載入完成後執行的函數
+window.addEventListener('load', function() {
+  // 短延遲以確保所有內容都已載入完成
+  setTimeout(function() {
+    // 獲取載入畫面元素
+    const loader = document.getElementById('page-loader');
+    
+    // 添加 loaded 類觸發淡出效果
+    loader.classList.add('loaded');
+    
+    // 移除 body 的 loading 類，恢復頁面捲動功能
+    document.body.classList.remove('loading');
+    
+    // 等待淡出動畫完成後完全移除載入畫面元素
+    setTimeout(function() {
+      // 隱藏載入畫面以釋放資源
+      loader.style.display = 'none';
+    }, 600); // 延遲時間與 CSS 過渡效果時間匹配
+  }, 400); // 額外延遲，使載入效果更明顯
+});
+
+
 });
