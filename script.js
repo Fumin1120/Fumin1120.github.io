@@ -129,7 +129,7 @@ function updateActiveNavLink() {
     const navHeight = document.querySelector('header').offsetHeight;
     
     // 當前滾動位置加上偏移量
-    const scrollPosition = window.pageYOffset + navHeight +100 ;
+    const scrollPosition = window.pageYOffset + navHeight +30 ;
     
     // 尋找最接近的區段
     let activeSection = null;
