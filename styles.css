@@ -50,6 +50,10 @@ section {
     background: linear-gradient(to right, #5e60ce, #64dfdf);
 }
 
+.logo img{
+height: 100px;
+}
+
 /* 載入畫面主容器樣式 */
 #page-loader {
     position: fixed; /* 固定定位，覆蓋整個視窗 */
