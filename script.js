@@ -56,7 +56,7 @@ navLinks.forEach(link => {
     });
 });
 
-// 優化的平滑滾動功能
+// 優化的平滑滾動功能（修復聯絡節點問題）
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();
@@ -66,6 +66,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         
         const targetElement = document.querySelector(targetId);
         if (!targetElement) return;
+        
+        // 保存目前點擊的導覽項的引用，用於後續精確標識
+        const clickedLink = this;
+        const clickedHref = targetId;
         
         // 獲取導覽列高度
         const navHeight = document.querySelector('header').offsetHeight;
@@ -79,7 +83,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         
         // 設置目標導覽項為活動狀態
         navLinks.forEach(link => link.classList.remove('active'));
-        this.classList.add('active');
+        clickedLink.classList.add('active');
         
         // 定義滾動參數
         const duration = 600;  // 適中的持續時間
@@ -108,8 +112,19 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 // 確保最終位置精確
                 window.scrollTo(0, finalPosition);
                 
-                // 滾動完成後更新導覽項目
-                setTimeout(updateActiveNavLink, 100);
+                // 強制設置正確的活動項，避免被自動檢測覆蓋
+                setTimeout(() => {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    clickedLink.classList.add('active');
+                    
+                    // 將正確的目標ID存儲到全局變量，供updateActiveNavLink使用
+                    window.currentActiveSection = clickedHref.replace('#', '');
+                    
+                    // 延遲適當時間後才恢復自動檢測
+                    setTimeout(() => {
+                        window.currentActiveSection = null;
+                    }, 1000);
+                }, 100);
             }
         }
         
@@ -117,8 +132,22 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// 準確的活動導覽項目更新函數
+// 準確的活動導覽項目更新函數（修復聯絡與證照錯誤識別問題）
 function updateActiveNavLink() {
+    // 如果正在使用手動設置的活動區段，則優先使用它
+    if (window.currentActiveSection) {
+        const manualActiveId = window.currentActiveSection;
+        navLinks.forEach(link => {
+            const linkHref = link.getAttribute('href');
+            if (linkHref === `#${manualActiveId}`) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+        return;
+    }
+    
     // 找出所有有ID的區段
     const sections = Array.from(document.querySelectorAll('section[id]'));
     
@@ -129,31 +158,44 @@ function updateActiveNavLink() {
     const navHeight = document.querySelector('header').offsetHeight;
     
     // 當前滾動位置加上偏移量
-    const scrollPosition = window.pageYOffset + navHeight +30 ;
+    const scrollPosition = window.pageYOffset + navHeight + 40; // 增加偏移量以改善檢測
     
-    // 尋找最接近的區段
+    // 尋找最接近的區段，使用改進的算法
     let activeSection = null;
-    let minDistance = Infinity;
     
-    // 優先考慮已經滾動過的區段
-    for (const section of sections) {
-        const sectionTop = section.offsetTop;
+    // 特殊處理：先檢查是否接近頁面底部（用於聯絡區段）
+    const pageBottom = document.body.scrollHeight;
+    const viewportHeight = window.innerHeight;
+    const scrollBottom = window.pageYOffset + viewportHeight;
+    
+    // 如果接近頁面底部（距離小於視窗高度的25%），則考慮最後一個區段為活動區段
+    if (pageBottom - scrollBottom < viewportHeight * 0.25) {
+        // 找出最後一個區段（通常是聯絡區段）
+        activeSection = sections[sections.length - 1];
+    } else {
+        // 否則使用距離檢測
+        let minDistance = Infinity;
         
-        if (scrollPosition >= sectionTop) {
-            const distance = scrollPosition - sectionTop;
-            if (distance < minDistance) {
-                minDistance = distance;
-                activeSection = section;
-            }
-        }
-    }
-    
-    // 如果沒有找到已滾動過的區段，則考慮即將到達的區段
-    if (!activeSection && sections.length > 0) {
+        // 分析每個區段
         for (const section of sections) {
-            const distance = Math.abs(scrollPosition - section.offsetTop);
-            if (distance < minDistance) {
-                minDistance = distance;
+            // 計算區段的邊界
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sectionBottom = sectionTop + sectionHeight;
+            
+            // 檢測是否在區段內部
+            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                activeSection = section;
+                break; // 找到確切匹配，立即結束
+            }
+            
+            // 如果不在區段內，使用距離為依據
+            const topDistance = Math.abs(scrollPosition - sectionTop);
+            const bottomDistance = Math.abs(scrollPosition - sectionBottom);
+            const minSectionDistance = Math.min(topDistance, bottomDistance);
+            
+            if (minSectionDistance < minDistance) {
+                minDistance = minSectionDistance;
                 activeSection = section;
             }
         }
@@ -162,6 +204,22 @@ function updateActiveNavLink() {
     // 更新導覽列項目
     if (activeSection) {
         const activeSectionId = activeSection.id;
+        
+        // 特殊處理聯絡區段，確保正確識別
+        if (activeSectionId === 'contact' || 
+            (activeSection === sections[sections.length - 1] && sections.length > 1)) {
+            // 確保它是頁面上最後一個區段時才標記為聯絡區段
+            const contactLink = Array.from(navLinks).find(link => 
+                link.getAttribute('href') === '#contact');
+                
+            if (contactLink) {
+                navLinks.forEach(link => link.classList.remove('active'));
+                contactLink.classList.add('active');
+                return;
+            }
+        }
+        
+        // 常規更新其他導覽項
         navLinks.forEach(link => {
             const linkHref = link.getAttribute('href');
             if (linkHref === `#${activeSectionId}`) {
@@ -175,7 +233,13 @@ function updateActiveNavLink() {
 
 // 初始化和滾動時更新導覽項目
 window.addEventListener('scroll', updateActiveNavLink);
-window.addEventListener('load', updateActiveNavLink);
+window.addEventListener('load', () => {
+    // 初始化全局變量用於追蹤手動設置的活動區段
+    window.currentActiveSection = null;
+    
+    // 初始更新導覽狀態
+    updateActiveNavLink();
+});
 
 // 技能進度條和數字動畫
 const skillSections = document.querySelectorAll('.skill-category');
