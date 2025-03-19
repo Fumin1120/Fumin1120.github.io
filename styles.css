@@ -722,29 +722,5 @@ footer {
         margin-bottom: 10px;
     }
 
-    @keyframes spin {
-        to {
-          transform: rotate(360deg); /* 旋轉一圈 */
-        }
-      }
-      
-      /* 載入文字樣式 */
-      #page-loader h2 {
-        color: #333; /* 深灰色文字 */
-        font-size: 22px;
-        letter-spacing: 1px; /* 字母間距 */
-        margin: 0;
-        font-weight: 500; /* 字體粗細 */
-      }
-      
-      /* 載入完成時的樣式 */
-      #page-loader.loaded {
-        opacity: 0; /* 完全透明 */
-        visibility: hidden; /* 隱藏但保留空間 */
-      }
-      
-      /* 確保頁面在載入期間不可捲動 */
-      body.loading {
-        overflow: hidden; /* 禁止捲動 */
-    }
+    
 }
