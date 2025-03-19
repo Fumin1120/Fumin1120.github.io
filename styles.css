@@ -149,7 +149,7 @@ nav {
 
 /* 首頁區域 */
 #home {
-    height: 100vh;
+    height: auto;
     display: flex;
     align-items: center;
     position: relative;
@@ -160,7 +160,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 200px 0 0 0;
+    padding: 10px 0 0 0;
 }
 
 .home-text {
